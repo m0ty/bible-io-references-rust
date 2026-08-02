@@ -1,0 +1,64 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - "Release-*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crates-io-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Validate release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          tag_version="${GITHUB_REF_NAME#Release-}"
+          if [[ ! "$tag_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a tag in the form Release-x.x.x, got $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
+          manifest_version="$(
+            cargo metadata --no-deps --format-version 1 --locked |
+              jq -r '.packages[] | select(.name == "bible-io-references") | .version'
+          )"
+          if [[ "$tag_version" != "$manifest_version" ]]; then
+            echo "Tag version $tag_version does not match Cargo.toml version $manifest_version" >&2
+            exit 1
+          fi
+
+      - run: cargo fmt --all -- --check
+      - run: cargo test --all-features --locked
+      - run: cargo test --no-default-features --locked
+      - run: cargo clippy --all-targets --all-features --locked -- -D warnings
+      - run: cargo doc --all-features --no-deps --locked
+        env:
+          RUSTDOCFLAGS: -D warnings -D missing_docs
+      - run: cargo package --locked
+
+      - name: Authenticate with crates.io
+        id: auth
+        uses: rust-lang/crates-io-auth-action@v1
+
+      - name: Publish to crates.io
+        run: cargo publish --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}

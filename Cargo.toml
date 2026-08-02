@@ -9,6 +9,7 @@ repository = "https://github.com/m0ty/bible-io-references-rust"
 documentation = "https://docs.rs/bible-io-references"
 readme = "README.md"
 default-run = "bible-io-references"
+publish = ["crates-io"]
 keywords = ["bible", "parser", "reference", "scripture", "osis"]
 categories = ["parser-implementations", "text-processing"]
 

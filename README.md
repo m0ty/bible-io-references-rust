@@ -1,10 +1,8 @@
 # bible-io-references
 
-An idiomatic Rust implementation of the parsing model in
-[`bible-io-references-dart` Release 1.1.0](https://github.com/m0ty/bible-io-references-dart/releases/tag/Release-1.1.0).
-
-The crate parses multilingual Bible references and richer passage expressions
-without assuming a particular translation, canon, or versification table.
+A Rust library for parsing, formatting, serializing, and extracting multilingual
+Bible references and richer passage expressions, without assuming a particular
+translation, canon, or versification table.
 
 ## Features
 
@@ -16,7 +14,7 @@ without assuming a particular translation, canon, or versification table.
 - Read-only localized alias registries and automatic-collision introspection
 - OSIS and USFM serialization and strict reverse parsing for all 83 books
 - Parser-driven extraction, replacement, and Markdown linkification in prose
-- Optional Dart-compatible JSON serialization through `serde`
+- Optional stable JSON serialization through `serde`
 - No required runtime dependencies
 
 ## Installation
@@ -144,8 +142,7 @@ assert_eq!(
 ```
 
 Machine identifier parsing is intentionally case-sensitive. Cross-book USFM
-ranges use the Dart package's reversible extension, for example
-`JHN-ACT 21:25-1:2`.
+ranges use the crate's reversible extension, for example `JHN-ACT 21:25-1:2`.
 
 ## Extraction
 
@@ -174,13 +171,12 @@ directional controls. It is intentionally reference-specific rather than a
 general transliteration or Unicode normalization library.
 
 `normalize_detailed` maps normalized UTF-8 byte ranges back to slice-safe byte
-ranges in the original input. This is the intentional Rust equivalent of the
-Dart package's UTF-16 mapping API.
+ranges in the original input.
 
 ## JSON
 
-With the `serde` feature, `Book`, references, and passages use the stable Dart
-wire shapes. For example, John 3:16 serializes as:
+With the `serde` feature, `Book`, references, and passages use stable wire
+shapes. For example, John 3:16 serializes as:
 
 ```json
 {"type":"verse","book":"jo","chapter":3,"verse":16}
@@ -188,8 +184,8 @@ wire shapes. For example, John 3:16 serializes as:
 
 Deserialization calls the same checked constructors as normal Rust code, so
 zero coordinates, empty passage collections, and reversed ranges are rejected.
-Parse candidates, token matches, and parse metadata also serialize with the
-field names used by Dart 1.1.0.
+Parse candidates, token matches, and parse metadata also use stable camel-case
+field names.
 
 ## Command Line
 
@@ -201,8 +197,9 @@ cargo run -- --language es --format osis "Juan 3:16-17"
 cargo run -- --format usfm --input references.txt
 ```
 
-Batch mode reads one nonblank UTF-8 expression per line. Exit codes follow the
-Dart package: `0` success, `64` usage, `65` parse failure, and `66` input error.
+Batch mode reads one nonblank UTF-8 expression per line. Exit codes are `0`
+for success, `64` for usage errors, `65` for parse failures, and `66` for input
+errors.
 
 ## Scope
 
