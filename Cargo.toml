@@ -1,0 +1,30 @@
+[package]
+name = "bible-io-references"
+version = "1.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Parse, format, serialize, and extract multilingual Bible references and passages"
+license = "AGPL-3.0-only"
+repository = "https://github.com/m0ty/bible-io-references-rust"
+documentation = "https://docs.rs/bible-io-references"
+readme = "README.md"
+default-run = "bible-io-references"
+keywords = ["bible", "parser", "reference", "scripture", "osis"]
+categories = ["parser-implementations", "text-processing"]
+
+[features]
+default = []
+serde = ["dep:serde"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"], optional = true }
+
+[dev-dependencies]
+serde_json = "1.0"
+
+[[bin]]
+name = "bible-io-references"
+path = "src/bin/bible_io_references.rs"
+
+[package.metadata.docs.rs]
+all-features = true
