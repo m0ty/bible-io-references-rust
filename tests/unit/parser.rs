@@ -43,10 +43,23 @@ fn handles_language_detection_and_collisions() {
         Some(Language::Spanish)
     );
     assert_eq!(parser.parse("jn 1:1").unwrap().start().book(), Book::Jonah);
+}
 
-    let collision = auto_language_collisions().get("jn").unwrap();
-    assert!(collision.contains(&Book::Jonah));
-    assert!(collision.contains(&Book::John));
+#[test]
+fn auto_collision_registry_matches_dart_1_1_contract() {
+    let collisions = auto_language_collisions();
+
+    assert_eq!(
+        collisions.keys().map(String::as_str).collect::<Vec<_>>(),
+        ["jc", "jn", "jud", "so"]
+    );
+    assert_eq!(collisions["jc"].as_slice(), &[Book::Judges, Book::James]);
+    assert_eq!(collisions["jn"].as_slice(), &[Book::Jonah, Book::John]);
+    assert_eq!(collisions["jud"].as_slice(), &[Book::Judges, Book::Jude]);
+    assert_eq!(
+        collisions["so"].as_slice(),
+        &[Book::SongOfSolomon, Book::Zephaniah]
+    );
 }
 
 #[test]

@@ -1,6 +1,6 @@
 [package]
 name = "bible-io-references"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2024"
 rust-version = "1.85"
 description = "Parse, format, serialize, and extract multilingual Bible references and passages"
@@ -29,3 +29,9 @@ path = "src/bin/bible_io_references.rs"
 
 [package.metadata.docs.rs]
 all-features = true
+
+[package.metadata.dart-parity]
+repository = "https://github.com/m0ty/bible-io-references-dart"
+branch = "main"
+commit = "8399fac944f0d44bb539a628bf81419a2e435bbc"
+version = "1.1.0"

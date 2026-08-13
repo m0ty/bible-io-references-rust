@@ -1,0 +1,47 @@
+name: Upstream Dart parity
+
+on:
+  push:
+    paths:
+      - ".github/workflows/upstream-parity.yml"
+      - "Cargo.toml"
+      - "UPSTREAM.md"
+      - "src/**"
+      - "tools/parity/**"
+  pull_request:
+    paths:
+      - ".github/workflows/upstream-parity.yml"
+      - "Cargo.toml"
+      - "UPSTREAM.md"
+      - "src/**"
+      - "tools/parity/**"
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Rust package
+        uses: actions/checkout@v4
+
+      - name: Check out latest Dart source
+        uses: actions/checkout@v4
+        with:
+          repository: m0ty/bible-io-references-dart
+          ref: main
+          path: .dart-upstream
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Compare pinned source and behavior
+        shell: pwsh
+        run: tools/parity/check.ps1 -DartCheckout .dart-upstream

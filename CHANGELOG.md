@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1 - 2026-08-13
+
+- Pinned the authoritative Dart upstream to an exact release commit
+- Added exhaustive language-data and collision-contract regression tests
+- Added a cross-runtime Dart/Rust parity checker and scheduled drift workflow
+- Added Dart-compatible fallback errors, named parsing helpers, and checked
+  verse-range copy helpers
+
 ## 1.1.0 - 2026-08-02
 
 - Initial Rust implementation based on `bible-io-references-dart` Release 1.1.0

@@ -6,6 +6,8 @@ use core::fmt;
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
 pub enum ParseErrorKind {
+    /// A fallback classification for a parse failure without a more specific kind.
+    Unknown,
     /// The input contains no reference text.
     EmptyReference,
     /// The input does not match the requested grammar.
@@ -37,6 +39,7 @@ impl ParseErrorKind {
     #[must_use]
     pub const fn code(self) -> &'static str {
         match self {
+            Self::Unknown => "unknown",
             Self::EmptyReference => "empty_reference",
             Self::PatternMismatch => "pattern_mismatch",
             Self::UnknownBook => "unknown_book",

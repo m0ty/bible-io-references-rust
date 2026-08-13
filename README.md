@@ -210,6 +210,16 @@ errors.
 - Passage lists use commas and sequences use semicolons; prose words such as
   `and` are not grammar separators.
 
+## Upstream Parity
+
+The Dart package is the authoritative behavioral upstream. The pinned commit,
+parity evidence, and intentionally allowed Rust differences are documented in
+[UPSTREAM.md](UPSTREAM.md). Check a local Dart checkout with:
+
+```powershell
+pwsh tools/parity/check.ps1 -DartCheckout PATH
+```
+
 ## Development
 
 Test implementations live under `tests/unit/` and are included from their

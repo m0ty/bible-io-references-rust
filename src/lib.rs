@@ -48,6 +48,20 @@ pub use reference::{
 /// Compatibility name for callers familiar with the Dart package.
 pub type VerseRangeRef = VerseRange;
 
+/// Parse a verse reference using the crate's normalized parser.
+///
+/// This compatibility helper mirrors the Dart package's named parsing API.
+pub fn verse_ref_from_str(input: &str) -> Result<VerseRef, ParseError> {
+    input.parse()
+}
+
+/// Parse an inclusive verse range using the crate's normalized parser.
+///
+/// This compatibility helper mirrors the Dart package's named parsing API.
+pub fn verse_range_ref_from_str(input: &str) -> Result<VerseRangeRef, ParseError> {
+    input.parse()
+}
+
 /// Parse a verse or inclusive verse range using automatic language detection.
 pub fn parse_reference(input: &str) -> Result<Reference, ParseError> {
     input.parse()

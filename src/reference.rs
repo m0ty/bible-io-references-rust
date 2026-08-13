@@ -227,6 +227,16 @@ impl VerseRange {
         Ok(Self { start, end })
     }
 
+    /// Return a validated copy with a different inclusive start.
+    pub const fn with_start(self, start: VerseRef) -> Result<Self, RangeOrderError> {
+        Self::new(start, self.end)
+    }
+
+    /// Return a validated copy with a different inclusive end.
+    pub const fn with_end(self, end: VerseRef) -> Result<Self, RangeOrderError> {
+        Self::new(self.start, end)
+    }
+
     /// Parse a range with an optional explicit book-name language.
     pub fn parse_with_language(input: &str, language: Language) -> Result<Self, ParseError> {
         ReferenceParser::new().parse_range_with_language(input, language)
